@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    input, button {
+      padding: 8px;
+    }
+
+    #resultado {
+      margin-top: 20px;
+    }
+
+    .erro {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Buscar Post</h1>
+
+  <input type="number" id="idPost" placeholder="ID do post">
+  <button id="btnBuscar">Buscar</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    const posts = [
+      { userId: 1, id: 1, title: 'Primeiro post', body: 'Aprendendo a manipular o DOM.' },
+      { userId: 1, id: 2, title: 'Segundo post', body: 'Arrays de objetos são parecidos com o JSON de uma API.' },
+      { userId: 2, id: 3, title: 'Terceiro post', body: 'Em breve vamos buscar estes dados no servidor.' },
+      { userId: 2, id: 4, title: 'Quarto post', body: 'O método find devolve o primeiro item encontrado.' },
+      { userId: 3, id: 5, title: 'Quinto post', body: 'Se nada for encontrado, find devolve undefined.' }
+    ];
+
+    const campo = document.getElementById('idPost');
+    const botao = document.getElementById('btnBuscar');
+    const resultado = document.getElementById('resultado');
+
+    botao.addEventListener('click', function () {
+      const valor = campo.value.trim();
+      resultado.innerHTML = '';
+
+      // Regra 1: campo vazio
+      if (valor === '') {
+        resultado.textContent = 'Digite um ID.';
+        return;
+      }
+
+      const id = Number(valor);
+      const post = posts.find(function (p) {
+        return p.id === id;
+      });
+
+      // Regra 2: post não existe
+      if (post === undefined) {
+        const erro = document.createElement('p');
+        erro.className = 'erro';
+        erro.textContent = 'Post não encontrado (ID ' + valor + '). Os IDs válidos vão de 1 a 5.';
+        resultado.appendChild(erro);
+        return;
+      }
+
+      // Post encontrado: título em <h2> e corpo em <p>
+      const titulo = document.createElement('h2');
+      titulo.textContent = post.title;
+
+      const corpo = document.createElement('p');
+      corpo.textContent = post.body;
+
+      resultado.appendChild(titulo);
+      resultado.appendChild(corpo);
+    });
+  </script>
+</body>
+</html>
